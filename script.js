@@ -293,4 +293,44 @@ function closeLightbox() {
     }, 300); // matches the CSS transition time
 }
 
+// 3D Spiral Staircase Dynamic Generation and Animation
+document.addEventListener('DOMContentLoaded', () => {
+    const staircase = document.querySelector('.education-staircase .staircase');
+    if (staircase) {
+        const stepCount = 65;
+        const heightSpacing = 11; // px vertical spacing per step (compact for 750px height)
+        const rotationSpacing = 12; // degrees rotation per step
+        const startY = -(stepCount * heightSpacing) / 2;
+
+        for (let i = 0; i < stepCount; i++) {
+            const step = document.createElement('div');
+            step.className = 'stair-step';
+            
+            const yPos = startY + (i * heightSpacing);
+            const yRot = i * rotationSpacing;
+            
+            // Set the initial spiral position for the step
+            step.style.transform = `translateY(${yPos}px) rotateY(${yRot}deg)`;
+            staircase.appendChild(step);
+        }
+    }
+
+    // Scroll-linked rotation and up/down movement
+    window.addEventListener('scroll', () => {
+        const staircase = document.querySelector('.education-staircase .staircase');
+        if (staircase) {
+            const scrollLimit = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollLimit > 0 ? window.scrollY / scrollLimit : 0;
+            
+            // Calculate rotation angle (3 full rotations over the scroll height)
+            const rotationAngle = scrollPercent * 360 * 3;
+            
+            // Calculate vertical shift (moves up and down gently as you scroll)
+            const verticalShift = (scrollPercent - 0.5) * -80; // range of -40px to +40px
+            
+            staircase.style.transform = `rotateY(${rotationAngle}deg) translateY(${verticalShift}px)`;
+        }
+    });
+});
+
 

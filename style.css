@@ -465,6 +465,8 @@ ul {
 
 /* Glowing Staircase Step Symbol Styles */
 .staircase-symbol {
+    --step-height: 95px;
+    --band-y-offset: calc(var(--step-height) / 2 - 23.5px);
     position: relative;
     width: 300px;
     height: 300px;
@@ -479,7 +481,7 @@ ul {
     top: 50%;
     left: 50%;
     width: 30px;
-    height: 95px;
+    height: var(--step-height);
     background: rgba(255, 255, 255, 0.95);
     border-radius: 2px;
     transform: translate(-50%, -50%);
@@ -488,7 +490,7 @@ ul {
         0 0 30px rgba(37, 99, 235, 0.85),
         0 0 50px rgba(37, 99, 235, 0.45);
     z-index: 2;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, height 0.3s ease;
 }
 
 .stair-band {
@@ -502,15 +504,15 @@ ul {
     border-radius: 4px;
     z-index: 1;
     box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease;
 }
 
 .band-top {
-    transform: translate(-50%, -50%) translate(48px, -24px) rotate(-45deg);
+    transform: translate(-50%, -50%) translate(48px, calc(-1 * var(--band-y-offset))) rotate(-45deg);
 }
 
 .band-bottom {
-    transform: translate(-50%, -50%) translate(-48px, 24px) rotate(-45deg);
+    transform: translate(-50%, -50%) translate(-48px, var(--band-y-offset)) rotate(-45deg);
 }
 
 /* Hover effects for premium feel */
@@ -1233,9 +1235,42 @@ ul {
     font-weight: 500;
 }
 
-.timeline-content p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
+
+/* Education Grid Layout */
+.education-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.education-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.education-right {
+    width: 100%;
+}
+
+/* Custom taller staircase for Education section */
+.education-staircase {
+    height: 750px; /* increased length according to the section */
+    width: 300px; /* donot change the width */
+}
+
+@media (max-width: 992px) {
+    .education-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .education-left {
+        display: none; /* Hide on mobile/tablet to keep the focus on the timeline */
+    }
 }
 
 /* ================== CERTIFICATIONS SECTION ================== */
@@ -1674,4 +1709,76 @@ ul {
         padding: 2rem 1.5rem;
         gap: 1.5rem;
     }
+}
+
+/* ================== 3D SPIRAL STAIRCASE IN JOURNEY SECTION ================== */
+.staircase-container {
+    perspective: 1500px;
+    width: 300px;
+    height: 750px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    animation: float 6s ease-in-out infinite; /* Continuous floating effect */
+}
+
+.staircase-glow {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, rgba(3, 5, 20, 0) 70%);
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: -2;
+}
+
+.staircase {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease-out;
+}
+
+.center-pole {
+    position: absolute;
+    width: 16px;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.3), rgba(96, 165, 250, 0.6), rgba(37, 99, 235, 0.3));
+    box-shadow: 0 0 25px rgba(37, 99, 235, 0.4);
+    border-radius: 8px;
+    transform: translateZ(0);
+}
+
+.stair-step {
+    position: absolute;
+    width: 130px; /* Sweeps a neat radius fitting inside 300px container */
+    height: 12px;
+    background: rgba(3, 5, 20, 0.75);
+    border: 1.5px solid rgba(96, 165, 250, 0.4);
+    border-radius: 4px;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    left: 50%;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.2), inset 0 0 10px rgba(37, 99, 235, 0.15);
+}
+
+.stair-step::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #00d2ff;
+    filter: blur(4px);
+    opacity: 0.8;
+    box-shadow: 0 0 8px #00d2ff, 0 0 15px #00d2ff;
+    border-radius: 2px;
+    pointer-events: none;
 }
